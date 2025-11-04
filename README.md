@@ -36,3 +36,39 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Gitflow
+```mermaid
+flowchart LR
+
+subgraph Designer [Linh - Designer]
+D[design]
+end
+
+subgraph Developer [Tuấn - Developer]
+F[feature/*]
+DEV[develop]
+MAIN[main]
+end
+
+D --> DEV
+F --> DEV
+DEV --> MAIN
+```
+
+```mermaid
+sequenceDiagram
+participant Linh as Linh (Designer)
+participant Design as design branch
+participant Dev as Tuấn (Dev)
+participant Develop as develop branch
+participant Feature as feature/*
+participant Main as main
+
+Linh->>Design: Update UI assets, push branch
+Dev->>Design: Pull design updates
+Dev->>Develop: Merge design -> develop
+Dev->>Feature: Create feature/* branch
+Feature->>Develop: Merge feature/* to develop
+Develop->>Main: Release to main
+```
