@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -43,6 +42,16 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Custom colors from design spec */
+  --color-main-primary: #5a864d;
+  --color-bg-primary: #f9fafb;
+  --color-bg-sub: #ebf1e9;
+  --color-text-primary: #111827;
+  --color-text-sub: #52604a;
+  --color-text-error: #ef4444;
+  --color-border-primary: #d2decb;
+  --color-border-sub: #e5e7eb;
 }
 
 :root {
