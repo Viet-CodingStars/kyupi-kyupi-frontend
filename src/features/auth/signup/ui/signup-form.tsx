@@ -1,11 +1,11 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useSignUp } from "../model/use-signup";
+import type { SignUpRequest } from "@/entities/users/types";
+import { PasswordInput } from "@/shared/ui";
 
-type SignupFormData = {
-  email: string;
-  name: string;
-  password: string;
+type SignupFormData = SignUpRequest & {
   confirmPassword: string;
 };
 
@@ -14,20 +14,27 @@ export function SignupForm() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignupFormData>();
 
+  const { mutate: signUp, isPending, error } = useSignUp();
   const password = watch("password");
 
-  const onSubmit = async (data: SignupFormData) => {
+  const onSubmit = (data: SignupFormData) => {
     // Only send required fields to API
     const { confirmPassword, ...signupData } = data;
-    console.log("Signup data:", signupData);
-    // TODO: POST /api/users with { email, name, password }
+    signUp(signupData);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Error Message */}
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+          {error.response?.data?.error || "Đăng ký thất bại. Vui lòng thử lại."}
+        </div>
+      )}
+
       {/* Email */}
       <div className="space-y-2">
         <label
@@ -88,9 +95,8 @@ export function SignupForm() {
         >
           Mật khẩu <span className="text-destructive">*</span>
         </label>
-        <input
+        <PasswordInput
           id="signup-password"
-          type="password"
           {...register("password", {
             required: "Mật khẩu là bắt buộc",
             minLength: {
@@ -99,11 +105,8 @@ export function SignupForm() {
             },
           })}
           placeholder="••••••••"
-          className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-smooth hover:border-primary/50"
+          error={errors.password?.message}
         />
-        {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
-        )}
       </div>
 
       {/* Confirm Password */}
@@ -114,30 +117,24 @@ export function SignupForm() {
         >
           Xác nhận mật khẩu <span className="text-destructive">*</span>
         </label>
-        <input
+        <PasswordInput
           id="signup-confirm-password"
-          type="password"
           {...register("confirmPassword", {
             required: "Vui lòng xác nhận mật khẩu",
             validate: (value) => value === password || "Mật khẩu không khớp",
           })}
           placeholder="••••••••"
-          className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-smooth hover:border-primary/50"
+          error={errors.confirmPassword?.message}
         />
-        {errors.confirmPassword && (
-          <p className="text-sm text-destructive">
-            {errors.confirmPassword.message}
-          </p>
-        )}
       </div>
 
       {/* Submit Button */}
       <button
         type="submit"
-        disabled={isSubmitting}
-        className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:scale-105 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+        disabled={isPending}
+        className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:scale-105 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 hover:cursor-pointer"
       >
-        {isSubmitting ? "Đang tạo tài khoản..." : "Tạo Tài Khoản"}
+        {isPending ? "Đang tạo tài khoản..." : "Tạo Tài Khoản"}
       </button>
 
       {/* Divider */}

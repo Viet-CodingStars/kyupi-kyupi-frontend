@@ -1,26 +1,33 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-
-type SigninFormData = {
-  email: string;
-  password: string;
-};
+import { useSignIn } from "../model/use-signin";
+import type { SignInRequest } from "@/entities/users/types";
+import { PasswordInput } from "@/shared/ui";
 
 export const SigninForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<SigninFormData>();
+    formState: { errors },
+  } = useForm<SignInRequest>();
 
-  const onSubmit = async (data: SigninFormData) => {
-    console.log("Signin data:", data);
-    // TODO: POST /api/users/sign_in with { email, password }
+  const { mutate: signIn, isPending, error } = useSignIn();
+
+  const onSubmit = (data: SignInRequest) => {
+    signIn(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Error Message */}
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+          {error.response?.data?.error ||
+            "Đăng nhập thất bại. Vui lòng thử lại."}
+        </div>
+      )}
+
       {/* Email Field */}
       <div className="space-y-2">
         <label
@@ -39,7 +46,7 @@ export const SigninForm = () => {
               message: "Email không hợp lệ",
             },
           })}
-          placeholder="you@example.com"
+          placeholder="NguyenVanA@example.com"
           className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-smooth hover:border-primary/50"
         />
         {errors.email && (
@@ -55,25 +62,21 @@ export const SigninForm = () => {
         >
           Mật khẩu
         </label>
-        <input
+        <PasswordInput
           id="login-password"
-          type="password"
           {...register("password", { required: "Mật khẩu là bắt buộc" })}
           placeholder="••••••••"
-          className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-smooth hover:border-primary/50"
+          error={errors.password?.message}
         />
-        {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
-        )}
       </div>
 
       {/* Submit Button */}
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isPending}
         className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:scale-105 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 hover:cursor-pointer"
       >
-        {isSubmitting ? "Đang đăng nhập..." : "Đăng Nhập"}
+        {isPending ? "Đang đăng nhập..." : "Đăng Nhập"}
       </button>
 
       {/* Divider */}
