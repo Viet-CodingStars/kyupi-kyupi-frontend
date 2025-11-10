@@ -1,3 +1,5 @@
-export default function SignInPage() {
-  return <div>SignInPage</div>;
+import { SigninPage } from "@/pages/auth/signin";
+
+export default function SignInPageContainer() {
+  return <SigninPage />;
 }
