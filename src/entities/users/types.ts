@@ -1,4 +1,6 @@
-export interface User {
+// TODO: Refactor, avoid duplication
+
+export type User = {
   id: string;
   email: string;
   name: string;
@@ -8,20 +10,20 @@ export interface User {
   gender?: string;
   created_at: string;
   updated_at: string;
-}
+};
 
-export interface AuthResponse {
+export type AuthResponse = {
   token: string;
   user: User;
-}
+};
 
-export interface SignInRequest {
+export type SignInRequest = {
   email: string;
   password: string;
-}
+};
 
-export interface SignUpRequest {
+export type SignUpRequest = {
   email: string;
   name: string;
   password: string;
-}
+};
