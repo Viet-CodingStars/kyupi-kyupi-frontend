@@ -5,7 +5,7 @@ import {
   FieldErrors,
 } from "react-hook-form";
 import type { SignInRequest } from "@/entities/users/types";
-import { parseAuthError } from "@/shared/lib";
+import { parseSignInError } from "@/shared/lib";
 
 type SigninFormProps = {
   register: UseFormRegister<SignInRequest>;
@@ -29,7 +29,7 @@ export const SigninForm = ({
       <div className="min-h-6">
         {error && (
           <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {parseAuthError(error)}
+            {parseSignInError(error)}
           </div>
         )}
       </div>

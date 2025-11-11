@@ -1,1 +1,1 @@
-export { parseAuthError } from "./parse-error/auth";
+export { parseSignInError, parseSignUpError } from "./parse-error/auth";

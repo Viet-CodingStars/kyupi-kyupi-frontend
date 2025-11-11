@@ -3,7 +3,10 @@ import type { AuthResponse, SignInRequest, SignUpRequest } from "../types";
 
 export const authApi = {
   signIn: async (data: SignInRequest): Promise<AuthResponse> => {
-    const response = await apiClient.post<AuthResponse>("/api/users/sign_in", data);
+    const response = await apiClient.post<AuthResponse>(
+      "/api/users/sign_in",
+      data
+    );
     return response.data;
   },
 

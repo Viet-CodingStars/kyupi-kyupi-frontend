@@ -1,41 +1,48 @@
-"use client";
-
-import { useForm } from "react-hook-form";
-import { useSignUp } from "../model/use-signup";
+import {
+  UseFormRegister,
+  UseFormHandleSubmit,
+  FieldErrors,
+  UseFormWatch,
+} from "react-hook-form";
 import type { SignUpRequest } from "@/entities/users/types";
 import { PasswordInput } from "@/shared/ui";
+import { parseSignUpError } from "@/shared/lib/parse-error/auth";
 
-type SignupFormData = SignUpRequest & {
+export type SignupFormData = SignUpRequest & {
   confirmPassword: string;
 };
 
-export function SignupForm() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<SignupFormData>();
+type SignupFormProps = {
+  register: UseFormRegister<SignupFormData>;
+  handleSubmit: UseFormHandleSubmit<SignupFormData>;
+  onSubmit: (data: SignupFormData) => void;
+  watch: UseFormWatch<SignupFormData>;
+  error: string | null;
+  isPending: boolean;
+  errors: FieldErrors<SignupFormData>;
+};
 
-  const { mutate: signUp, isPending, error } = useSignUp();
+export function SignupForm({
+  register,
+  handleSubmit,
+  onSubmit,
+  watch,
+  error,
+  isPending,
+  errors,
+}: SignupFormProps) {
   const password = watch("password");
-
-  const onSubmit = (data: SignupFormData) => {
-    // Only send required fields to API
-    const { confirmPassword, ...signupData } = data;
-    signUp(signupData);
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Error Message */}
-      {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-          {error.response?.data?.error || "Đăng ký thất bại. Vui lòng thử lại."}
-        </div>
-      )}
+      <div className="min-h-6">
+        {error && (
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            {parseSignUpError(error)}
+          </div>
+        )}
+      </div>
 
-      {/* Email */}
       <div className="space-y-2">
         <label
           htmlFor="signup-email"
