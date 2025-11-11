@@ -1,8 +1,8 @@
 "use client";
 
 import { serviceList } from "../const/service-list";
-import { Heart } from "lucide-react";
 import Image from "next/image";
+import { assets } from "@shared/assets";
 
 export const CoreServices = () => {
   return (
@@ -12,11 +12,12 @@ export const CoreServices = () => {
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
             <Image
-              src="/logo.svg"
-              alt="KyupiKyupi"
-              width={136}
-              height={136}
-              className="w-7 h-7 text-white fill-white"
+              src={assets.logo}
+              alt="KyupiKyupi logo image"
+              width={350}
+              height={350}
+              priority
+              className="w-full h-full text-white fill-white"
             />
           </div>
           <div>
