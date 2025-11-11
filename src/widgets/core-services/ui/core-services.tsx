@@ -1,5 +1,3 @@
-"use client";
-
 import { serviceList } from "../const/service-list";
 import Image from "next/image";
 import { assets } from "@shared/assets";
@@ -8,6 +6,7 @@ export const CoreServices = () => {
   return (
     <div className="w-full h-full flex flex-col justify-between p-12 text-white">
       {/* Logo & Tagline */}
+      {/* TODO: This can be a header component, but not sure. If it is a header => refactor to header component*/}
       <div className="space-y-2">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
@@ -17,7 +16,7 @@ export const CoreServices = () => {
               width={350}
               height={350}
               priority
-              className="w-full h-full text-white fill-white"
+              className="w-full h-full text-white fill-white rounded-xl object-contain"
             />
           </div>
           <div>
@@ -32,13 +31,8 @@ export const CoreServices = () => {
       {/* Services List */}
       <div className="space-y-6 flex-1 flex flex-col justify-center">
         {serviceList.map((service, index) => {
-          const Icon = service.icon;
           return (
-            <div
-              key={index}
-              className="flex items-start gap-4 animate-fade-in-up"
-              style={{ animationDelay: `${0.1 + index * 0.1}s` }}
-            >
+            <div key={index} className="flex items-start gap-4 ">
               <div className="p-2.5  shrink-0">
                 <p className="text-2xl">{service.icon}</p>
               </div>

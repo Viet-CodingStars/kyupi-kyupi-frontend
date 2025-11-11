@@ -4,18 +4,17 @@ import { SigninFormContainer } from "@/features/auth/signin";
 export const SigninPage = () => {
   return (
     <div className="w-full space-y-6">
-      {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold text-foreground">Chào Mừng Trở Lại</h1>
+        <h1 className="text-2xl font-bold text-foreground">
+          Chào Mừng Trở Lại
+        </h1>
         <p className="text-sm text-muted-foreground">
           Đăng nhập để tiếp tục hành trình của bạn
         </p>
       </div>
 
-      {/* Signin Form */}
       <SigninFormContainer />
 
-      {/* Link to Signup */}
       <div className="text-center">
         <p className="text-sm text-muted-foreground">
           Chưa có tài khoản?{" "}

@@ -1,34 +1,39 @@
-"use client";
-
-import { useForm } from "react-hook-form";
-import { useSignIn } from "../model/use-signin";
-import type { SignInRequest } from "@/entities/users/types";
 import { PasswordInput } from "@/shared/ui";
+import {
+  UseFormRegister,
+  UseFormHandleSubmit,
+  FieldErrors,
+} from "react-hook-form";
+import type { SignInRequest } from "@/entities/users/types";
+import { parseAuthError } from "@/shared/lib";
 
-export const SigninForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInRequest>();
+type SigninFormProps = {
+  register: UseFormRegister<SignInRequest>;
+  handleSubmit: UseFormHandleSubmit<SignInRequest>;
+  onSubmit: (data: SignInRequest) => void;
+  error: string | null;
+  isPending: boolean;
+  errors: FieldErrors<SignInRequest>;
+};
 
-  const { mutate: signIn, isPending, error } = useSignIn();
-
-  const onSubmit = (data: SignInRequest) => {
-    signIn(data);
-  };
-
+export const SigninForm = ({
+  register,
+  handleSubmit,
+  onSubmit,
+  error,
+  isPending,
+  errors,
+}: SigninFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Error Message */}
-      {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-          {error.response?.data?.error ||
-            "Đăng nhập thất bại. Vui lòng thử lại."}
-        </div>
-      )}
+      <div className="min-h-6">
+        {error && (
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            {parseAuthError(error)}
+          </div>
+        )}
+      </div>
 
-      {/* Email Field */}
       <div className="space-y-2">
         <label
           htmlFor="login-email"
@@ -54,7 +59,6 @@ export const SigninForm = () => {
         )}
       </div>
 
-      {/* Password Field */}
       <div className="space-y-2">
         <label
           htmlFor="login-password"
@@ -79,7 +83,6 @@ export const SigninForm = () => {
         {isPending ? "Đang đăng nhập..." : "Đăng Nhập"}
       </button>
 
-      {/* Divider */}
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-border"></div>
