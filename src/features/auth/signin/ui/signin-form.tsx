@@ -1,10 +1,17 @@
-import { PasswordInput } from "@/shared/ui";
 import {
   UseFormRegister,
   UseFormHandleSubmit,
   FieldErrors,
 } from "react-hook-form";
 import type { SignInRequest } from "@/entities/users/types";
+import {
+  PasswordInput,
+  TextInput,
+  FormField,
+  ErrorAlert,
+  SubmitButton,
+  FormDivider,
+} from "@/shared/ui";
 import { parseSignInError } from "@/shared/lib";
 
 type SigninFormProps = {
@@ -26,22 +33,17 @@ export const SigninForm = ({
 }: SigninFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-          {parseSignInError(error)}
-        </div>
-      )}
+      {error && <ErrorAlert message={parseSignInError(error)} />}
 
-      <div className="space-y-2">
-        <label
-          htmlFor="login-email"
-          className="block text-sm font-medium text-foreground"
-        >
-          Email
-        </label>
-        <input
+      <FormField
+        label="Email"
+        htmlFor="login-email"
+        error={errors.email?.message}
+      >
+        <TextInput
           id="login-email"
           type="email"
+          placeholder="NguyenVanA@example.com"
           {...register("email", {
             required: "Email là bắt buộc",
             pattern: {
@@ -49,48 +51,27 @@ export const SigninForm = ({
               message: "Email không hợp lệ",
             },
           })}
-          placeholder="NguyenVanA@example.com"
-          className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-smooth hover:border-primary/50"
         />
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
-        )}
-      </div>
+      </FormField>
 
-      <div className="space-y-2">
-        <label
-          htmlFor="login-password"
-          className="block text-sm font-medium text-foreground"
-        >
-          Mật khẩu
-        </label>
+      <FormField
+        label="Mật khẩu"
+        htmlFor="login-password"
+        error={errors.password?.message}
+      >
         <PasswordInput
           id="login-password"
-          {...register("password", { required: "Mật khẩu là bắt buộc" })}
           placeholder="••••••••"
-          error={errors.password?.message}
+          {...register("password", { required: "Mật khẩu là bắt buộc" })}
         />
-      </div>
+      </FormField>
 
-      {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={isPending}
-        className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:scale-105 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 hover:cursor-pointer"
-      >
-        {isPending ? "Đang đăng nhập..." : "Đăng Nhập"}
-      </button>
+      <SubmitButton isLoading={isPending} loadingText="Đang đăng nhập...">
+        Đăng Nhập
+      </SubmitButton>
 
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border"></div>
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-background text-muted-foreground">
-            hoặc tiếp tục với
-          </span>
-        </div>
-      </div>
+      <FormDivider text="hoặc tiếp tục với" />
+
       {/* TODO: Add Google login*/}
       <button
         type="button"
