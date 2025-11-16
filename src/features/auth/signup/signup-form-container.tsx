@@ -11,6 +11,7 @@ export const SignupFormContainer = () => {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<SignupFormData>();
 
@@ -37,6 +38,7 @@ export const SignupFormContainer = () => {
       handleSubmit={handleSubmit}
       onSubmit={onSubmit}
       watch={watch}
+      control={control}
       error={serverError}
       isPending={isPending}
       errors={errors}

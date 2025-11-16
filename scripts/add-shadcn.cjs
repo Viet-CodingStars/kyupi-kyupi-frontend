@@ -6,9 +6,9 @@ const components = process.argv.slice(2);
 
 if (components.length === 0) {
   console.error(
-    "Usage: npm run shadcn:add <component> [component2] [component3]..."
+    "Usage: pnpm run shadcn:add <component> [component2] [component3]..."
   );
-  console.error("Example: npm run shadcn:add button input card");
+  console.error("Example: pnpm run shadcn:add button input card");
   process.exit(1);
 }
 

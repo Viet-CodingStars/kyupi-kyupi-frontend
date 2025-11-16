@@ -26,13 +26,11 @@ export const SigninForm = ({
 }: SigninFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="min-h-6">
-        {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {parseSignInError(error)}
-          </div>
-        )}
-      </div>
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+          {parseSignInError(error)}
+        </div>
+      )}
 
       <div className="space-y-2">
         <label
