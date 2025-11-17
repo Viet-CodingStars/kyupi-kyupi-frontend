@@ -59,6 +59,23 @@ export function SignupForm({
       {error && <ErrorAlert message={parseSignUpError(error)} />}
 
       <FormField
+        label="Họ và Tên"
+        htmlFor="signup-name"
+        error={errors.name?.message}
+        required
+      >
+        <TextInput
+          id="signup-name"
+          type="text"
+          placeholder="Nguyễn Văn A"
+          {...register("name", {
+            required: "Họ và tên là bắt buộc",
+            minLength: { value: 2, message: "Tên phải ít nhất 2 ký tự" },
+          })}
+        />
+      </FormField>
+
+      <FormField
         label="Email"
         htmlFor="signup-email"
         error={errors.email?.message}
@@ -74,23 +91,6 @@ export function SignupForm({
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
               message: "Email không hợp lệ",
             },
-          })}
-        />
-      </FormField>
-
-      <FormField
-        label="Họ và Tên"
-        htmlFor="signup-name"
-        error={errors.name?.message}
-        required
-      >
-        <TextInput
-          id="signup-name"
-          type="text"
-          placeholder="Nguyễn Văn A"
-          {...register("name", {
-            required: "Họ và tên là bắt buộc",
-            minLength: { value: 2, message: "Tên phải ít nhất 2 ký tự" },
           })}
         />
       </FormField>
